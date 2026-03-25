@@ -320,15 +320,6 @@ with st.sidebar:
         df_rf_rv = calcular_rf_vs_rv(df_classes)
         df_top10 = calcular_top10(abas)
     
-    if st.button("🧪 Testar PDF Básico"):
-        pdf_bytes = gerar_pdf_basico(patrimonio_total, df_classes, df_rf_rv, df_top10)
-        st.download_button(
-            label="📥 Baixar PDF Teste",
-            data=pdf_bytes,
-            file_name="teste_pdf.pdf",
-            mime="application/pdf"
-        )
-
 # ── Seção 1: Patrimônio Total
 
 st.subheader("💰 Patrimônio Total")
@@ -507,26 +498,3 @@ else:
         st.metric("Cotação utilizada (USD → BRL)", f"R$ {cotacao_implicita:.4f}")
 
 st.divider()
-
-# ── Seção 7: Comentário Geral da IA
-st.subheader("Comentário Geral — IA")
-
-if 'comentario_ia' not in st.session_state:
-    st.session_state['comentario_ia'] = None
-
-col_btn1, col_btn2 = st.columns([3, 1])
-
-with col_btn1:
-
-    if st.button("Gerar análise com IA", use_container_width=True):
-        with st.spinner("Analisando sua carteira..."):
-            st.session_state['comentario_ia'] = gerar_comentario_ia(
-                patrimonio_total, df_classes, df_rf_rv, df_top10, df_nac_int
-            )
-
-with col_btn2:
-    if st.button("Limpar", use_container_width=True):
-        st.session_state['comentario_ia'] = None
-
-if st.session_state['comentario_ia']:
-    st.info(st.session_state['comentario_ia'])
